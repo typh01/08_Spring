@@ -1,19 +1,52 @@
 package com.kh.spring.member.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.apache.catalina.filters.SetCharacterEncodingFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.spring.member.model.dto.MemberDTO;
+import com.kh.spring.member.model.service.MemberService;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 
 @Slf4j
 @Controller
+@RequiredArgsConstructor // 의존성 주입 생성자를 생성해주는 어노테이션
 public class MemberController {
+	
+	//DI 3가지
+	@Autowired // 1번
+	private MemberService memberService;
+	
+	
+	/* 
+	@Autowired // 2번
+ 	public void setMemberService(MemberService memberService) {
+		this.memberService = memberService;
+	}
+	*/
+	
+	/* 
+	@Autowired // 3번 (권장)
+	public MemberController(MemberService memberSerivce) {
+		this.memberService = memberSerivce;
+	}
+	*/
+	
+	
 	
 	/* 1번 방법
 	@RequestMapping(value="login")
@@ -64,11 +97,112 @@ public class MemberController {
 	 * 스프링에서 해당 객체를 기본 생성자를 통해서 생성한 후 내부적으로 setter메서드를 찾아서 요청 시 전달 값을 해당 필드에 대입해줌
 	 * (Setter Injection)
 	 */
+//
+//	@PostMapping("login")
+//	public String login(MemberDTO member, 
+//						HttpSession session,
+//						Model model) {
+//		
+//		// log.info("페이지의 키값과 담을 필드의 이름이 같으면 오! {}", member);
+//		
+//		/* 
+//		 * 1. 데이터 가공 => 스프링이 대신해줌
+//		 * 2. 요청 처리 => 서비스로!
+//		 * 3. 응답 화면 지정
+//		 */
+//		
+//		MemberDTO loginMember = memberService.login(member);
+//		/*
+//		if(loginMember != null) {
+//			log.info("로그인 성공!");
+//		} else {
+//			log.info("로그인 실패...");
+//		}
+//		*/
+//		
+//		if(loginMember != null) { // 성공했을 때
+//			// sessionScope에 로그인정보를 담아줌
+//			session.setAttribute("loginMember", loginMember);
+//			// main_page
+//			// /WEB-INF/views/
+//			// .jsp
+//			// => 포워딩
+//			// sendRedirect
+//			
+//			// localhost/spring  /
+//			
+//			return "redirect:/";
+//			
+//		} else { // 실패 했을 때
+//					
+//			// error_page
+//			// requestScope에 에러문구를 담아서 포워딩 <에러 페이지에서만 쓸 값이니까>
+//			// Spring에서는 Model객체를 이용해서 RequestScope에 값을 담음
+//			model.addAttribute("message", "로그인 실패!");
+//			
+//			// forwarding
+//			// /WEB-INF/views/
+//			// include/error_page
+//			// .jsp 
+//			// 논리적인 경로로 물리적인 경로를 찾아감
+//			return "include/error_page";	
+//		}
+//		
+//		//return "main_page";
+//	}
+	
+	// 두 번째 방법 반환타입 ModelAndView로 돌아가기
 	@PostMapping("login")
-	public String login(MemberDTO member) {
+	public ModelAndView login(MemberDTO member,
+							  HttpSession session,
+							  ModelAndView mv) {
+		MemberDTO loginMember = memberService.login(member);
 		
-		log.info("페이지의 키값과 담을 필드의 이름이 같으면 오! {}", member);
+		if(loginMember != null) {
+			session.setAttribute("loginMember", loginMember);
+			mv.setViewName("redirect:/");
+		}else {
+			mv.addObject("message", "로그인실패!")
+			  .setViewName("include/error_page");
+		}
 		
+		return mv;
+	}
+	
+	
+	@GetMapping("logout")
+	public ModelAndView logout(HttpSession session,
+						  	   ModelAndView mv) {
+	
+		
+		session.removeAttribute("loginMember");
+		mv.setViewName("redirect:/");
+		return mv;
+	}
+	
+	@GetMapping("signup-form")
+	public String signupForm() {
+		// /WEB-INF/views/member/signup-form.jsp
+		return "member/signup-form";
+	}
+	
+	
+	/**
+	 * @param memberId, memberPw...
+	 * 
+	 * @return 성공 시 main_page 실패하면 err담아서 error_page
+	 */
+	@PostMapping("signup")
+	public String signup(MemberDTO member) {
+		/* 이미 뽑았음
+		try {
+			request.setCharacterEncoding("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		*/
+//		log.info("멤버 필드 찍어보기 : {}", member);
+		memberService.signUp(member);
 		return "main_page";
 	}
 }

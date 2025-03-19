@@ -193,6 +193,24 @@
 		    <scope>provided</scope>
 		</dependency>
 		
+		<!-- 3. 비밀번호 암호화를 위한 스프링 시큐리티 모듈 -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-core</artifactId>
+		    <version>5.5.2</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-web</artifactId>
+		    <version>5.5.2</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-config</artifactId>
+		    <version>5.5.2</version>
+		</dependency>
 		    
 	</dependencies>
     <build>

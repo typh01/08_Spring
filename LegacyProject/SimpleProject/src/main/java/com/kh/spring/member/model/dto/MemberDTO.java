@@ -19,5 +19,5 @@ public class MemberDTO {
 	private String memberPw;
 	private String memberName;
 	private String email;
-	private Date createDate;
+	private Date enrollDate;
 }
