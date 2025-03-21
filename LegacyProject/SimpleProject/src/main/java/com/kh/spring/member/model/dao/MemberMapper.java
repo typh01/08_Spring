@@ -1,5 +1,6 @@
 package com.kh.spring.member.model.dao;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -20,6 +21,7 @@ public interface MemberMapper {
 	@Update("UPDATE KH_MEMBER SET MEMBER_NAME = #{memberName}, EMAIL = #{email} WHERE MEMBER_ID = #{memberId}")
 	int update(MemberDTO member);
 	
+	@Delete("DELETE FROM KH_MEMBER WHERE MEMBER_ID = #{memberId}")
 	int delete(MemberDTO member);
 	
 }

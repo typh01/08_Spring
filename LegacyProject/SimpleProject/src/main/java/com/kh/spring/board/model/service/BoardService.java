@@ -1,6 +1,9 @@
 package com.kh.spring.board.model.service;
 
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -9,7 +12,7 @@ import com.kh.spring.board.model.dto.BoardDTO;
 public interface BoardService {
 
 	// 게시글 작성(파일 첨부)
-	void insertBoard(BoardDTO board, MultipartFile file);
+	void insertBoard(BoardDTO board, MultipartFile file, HttpSession session);
 	/*
 	 * insertBoard();
 	 * 하는 것 + 대상
@@ -17,7 +20,7 @@ public interface BoardService {
 	 */
 	
 	// 게시글 목록 조회
-	List<BoardDTO> selectBoardList(int currentPage);
+	Map<String, Object> selectBoardList(int currentPage);
 	/*
 	 * selectBoardList();
 	 * selectAll();

@@ -68,59 +68,57 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>5</td>
-                        <td>마지막 게시글제목</td>
-                        <td>admin</td>
-                        <td>10</td>
-                        <td>2025-03-10</td>
-                        <td>💌</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>네번째 게시글제목</td>
-                        <td>admin</td>
-                        <td>10</td>
-                        <td>2025-03-07</td>
-                        <td>💌</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>세번째 게시글제목</td>
-                        <td>admin</td>
-                        <td>10</td>
-                        <td>2025-03-03</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>두번째 게시글제목</td>
-                        <td>admin</td>
-                        <td>100</td>
-                        <td>2025-03-01</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>첫번째 게시글제목</td>
-                        <td>admin</td>
-                        <td>45</td>
-                        <td>2025-02-25</td>
-                        <td>💌</td>
-                    </tr>
+                	
+                	<script>
+	                	function goBoard(boardNo) {
+	                	    location.href = `boards/\${boardNo}`;
+	                	}
+                	</script>
+                	
+                
+                	<c:choose>
+                		<c:when test="${ not empty map.boards }">
+                			<c:forEach var="board" items="${ map.boards }">               			
+			                    <tr onclick="goBoard(${ board.boardNo });">
+			                        <td>${ board.boardNo }</td>
+			                        <td>${ board.boardTitle }</td>
+			                        <td>${ board.boardWriter }</td>
+			                        <td>${ board.count }</td>
+			                        <td>${ board.createDate }</td>
+			                        <td>
+			                        	<c:if test="${ not empty board.changeName }">
+			                        	💌
+			                        	</c:if>
+			                        </td>
+			                    </tr>
+		                    </c:forEach>
+	                    </c:when>
+	                    <c:otherwise>
+	                    	<tr>
+	                    		<th colspan='6'> 게시글이 존재하지 않습니다... (┬┬﹏┬┬)</th>
+	                    	</tr>
+	                    </c:otherwise>
+                    </c:choose>
                 </tbody>
             </table>
             <br>
 
             <div id="pagingArea">
                 <ul class="pagination">
+                
+                
                     <li class="page-item disabled"><a class="page-link" href="#">이전</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                    
+                    <c:forEach begin="${ map.pageInfo.startPage }" end="${ map.pageInfo.endPage }" 
+                    		   var="num">
+                    	<li class="page-item">
+                    		<a class="page-link" href="boards?page=${ num }">${ num }</a>
+                    	</li>
+                    </c:forEach>
+                    
                     <li class="page-item"><a class="page-link" href="#">다음</a></li>
+                    
+                    
                 </ul>
             </div>
 

@@ -142,8 +142,25 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int delete(MemberDTO member) {
-		return 0;
+	public void delete(MemberDTO member, HttpSession session) {
+		MemberDTO sessionMember = (MemberDTO)session.getAttribute("loginMember");
+		
+		if(sessionMember == null) {
+			throw new NullPointerException("로그인이 안되있습니다.");
+		}
+		
+		member.setMemberId(sessionMember.getMemberId());
+		validator.validateMemberExists(member);
+		
+		int result = memberMapper.delete(member);
+		if(result != 1) {
+			throw new AuthenticationException("에러 발생. 다시 시도해주세요.");
+		}
+		
+		session.removeAttribute("loginMember");
+		session.setAttribute("message", "회원탈퇴가 완료되었습니다.");
+		
+		
 	}
 
 }

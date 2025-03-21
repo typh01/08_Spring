@@ -20,7 +20,7 @@ public interface MemberService {
 	void update(MemberDTO member, HttpSession session); // 2번
 	
 	// 회원탈퇴
-	int delete(MemberDTO member);
+	void delete(MemberDTO member, HttpSession session);
 	
 	//----------------- P1
 	
