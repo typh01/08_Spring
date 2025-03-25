@@ -174,5 +174,19 @@
  				BOARD_NO DESC	        
  	</select>
 	
+	<insert id="insertReply" 
+			parameterType="com.kh.spring.reply.model.dto.ReplyDTO">
+		INSERT
+		  INTO
+		  		TB_REPLY
+		VALUES	
+				(
+					SEQ_RNO.NEXTVAL
+				  , #{replyWriter}
+				  , #{replyContent}
+				  , SYSDATE
+				  , #{refBoardNo}
+				)	
+	</insert>
 	
 </mapper>

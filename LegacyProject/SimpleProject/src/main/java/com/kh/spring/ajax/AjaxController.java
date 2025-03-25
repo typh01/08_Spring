@@ -1,9 +1,17 @@
 package com.kh.spring.ajax;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.kh.spring.board.model.dto.BoardDTO;
+import com.kh.spring.board.model.service.BoardService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,6 +44,45 @@ public class AjaxController {
 	}
 	
 	
+	private final BoardService boardService;
+	
+	@Autowired
+	public AjaxController(BoardService boardService) {
+			this.boardService = boardService;
+	}
+	
+	@ResponseBody
+	@GetMapping(value = "study", produces="application/json; charset=UTF-8")
+	public BoardDTO ajaxStudy(@RequestParam("replyNo") int boardNo) {
+		
+		/*
+		 * DTO의 목적 == 테이블의 행에 있는 컬럼의 값을 필드에 담아옴
+		 * 
+		 * BOARDDTO
+		 * 
+		 * boardTitle == ....
+		 * boardContent == ....
+		 * 
+		 * Java -> JS
+		 * 
+		 * 옛날 XML 방식
+		 * <boardTitle>제목!.<boardTitle>
+		 * <boardContent>내용!<boardContent>
+		 * 
+		 * JSON
+		 * {
+		 * 	"boardTitle : "제목",
+		 *  "boardContent : "내용"
+		 * }
+		 * 
+		 */
+//		BoardDTO board = boardService.selectBoard(boardNo);
+//		log.info("{}", board);
+		
+//		Map<String, String> map = new HashMap(); 이걸 대신해줌!
+		
+		return boardService.selectBoard(boardNo);
+	}
 	
 	
 	

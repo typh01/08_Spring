@@ -21,6 +21,7 @@ import com.kh.spring.board.model.mapper.BoardMapper;
 import com.kh.spring.exception.AuthenticationException;
 import com.kh.spring.exception.InvalidParameterException;
 import com.kh.spring.member.model.dto.MemberDTO;
+import com.kh.spring.reply.model.dto.ReplyDTO;
 import com.kh.spring.util.model.dto.PageInfo;
 import com.kh.spring.util.template.Pagination;
 
@@ -173,7 +174,13 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	
-	
+	public int insertReply(ReplyDTO reply, HttpSession session) {
+		
+		String memberId = ((MemberDTO)session.getAttribute("loginMember")).getMemberId();
+		reply.setReplyWriter(memberId);
+		// SEQ_RNO
+		return boardMapper.insertReply(reply);
+	}
 	
 	
 	

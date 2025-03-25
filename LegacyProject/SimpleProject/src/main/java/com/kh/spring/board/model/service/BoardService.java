@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.spring.board.model.dto.BoardDTO;
+import com.kh.spring.reply.model.dto.ReplyDTO;
 
 public interface BoardService {
 	
@@ -47,9 +48,7 @@ public interface BoardService {
 	Map<String, Object> doSearch(Map<String, String> map);
 	
 	// 댓글작성
-	
-	
-	
+	int insertReply(ReplyDTO reply, HttpSession session);
 	
 	
 	
