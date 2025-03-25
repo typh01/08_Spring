@@ -98,21 +98,33 @@
 	                    		<th colspan='6'> 게시글이 존재하지 않습니다... (┬┬﹏┬┬)</th>
 	                    	</tr>
 	                    </c:otherwise>
-                    </c:choose>
+                    				</c:choose>
                 </tbody>
             </table>
             <br>
 
-            <div id="pagingArea">
+             <div id="pagingArea">
                 <ul class="pagination">
                 
-                
                     <li class="page-item disabled"><a class="page-link" href="#">이전</a></li>
-                    
-                    <c:forEach begin="${ map.pageInfo.startPage }" end="${ map.pageInfo.endPage }" 
-                    		   var="num">
+
+					<c:forEach begin="${ map.pageInfo.startPage }" 
+							   end="${ map.pageInfo.endPage }" 
+							   var="num">
+							   
                     	<li class="page-item">
-                    		<a class="page-link" href="boards?page=${ num }">${ num }</a>
+                    	
+                    		<c:choose>
+                    			<c:when test="${ empty map.condition }">
+									<!-- 일반 게시글 목록 조회 요청 -->
+		                    		<a class="page-link" href="boards?page=${ num }">${ num }</a>
+                    			</c:when>
+                    			<c:otherwise>
+		                    		<!-- 검색 게시글 목록 조회 요청 -->
+		                    		<a class="page-link" href="search?page=${ num }&condition=${ map.condition }&keyword=${ map.keyword }">
+		                    		${ num }</a>
+                    			</c:otherwise>
+                    		</c:choose>	
                     	</li>
                     </c:forEach>
                     
@@ -124,7 +136,7 @@
 
             <br clear="both"><br>
 
-            <form id="searchForm" action="" method="get" align="center">
+            <form id="searchForm" action="search" method="get" align="center">
                 <div class="select">
                     <select class="custom-select" name="condition">
                         <option value="writer">작성자</option>
@@ -133,7 +145,7 @@
                     </select>
                 </div>
                 <div class="text">
-                    <input type="text" class="form-control" name="keyword">
+                    <input type="text" class="form-control" name="keyword"  value="${ map.keyword }">
                 </div>
                 <button type="submit" class="searchBtn btn btn-secondary">검색</button>
             </form>
@@ -142,6 +154,27 @@
         <br><br>
 
     </div>
+    
+    <script>
+     
+     	// 현재 자바스크립트 사용목적 == HTML요소 조작 
+     	// const selected = document.querySelector();
+     	
+     	window.onload = function(){
+     		
+     		const currentUrl = window.location.href;
+     		//console.log(currentUrl);
+     		const obj = new URL(currentUrl);
+     		//console.log(obj);
+     		const condition = obj.searchParams.get('condition');
+     		//console.log(`condition : \${condition}`);
+     		const selected = document.querySelector(`option[value="\${condition}"]`);
+     		selected.selected = true;
+     		//console.log(selected);
+  		   	//console.log('${map.condition}');
+     	}
+     
+     </script>
 
     <jsp:include page="../include/footer.jsp" />
 

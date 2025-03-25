@@ -128,4 +128,51 @@
 	</select>
 	
 	
+	<select id="searchedCount" parameterType="hashmap" resultType="_int">
+ 		SELECT
+ 		       COUNT(*)
+ 		  FROM
+ 		       TB_SPRING_BOARD
+ 		 WHERE
+ 		       STATUS = 'Y'
+ 		<if test="condition == 'writer'">
+ 		   AND
+ 		       BOARD_WRITER 
+ 		</if>
+ 		<if test="condition == 'title'"> 
+ 		   AND
+ 		       BOARD_TITLE 
+ 		</if>
+ 		<if test="condition == 'content'"> 
+ 		   AND
+ 		       BOARD_CONTENT 
+ 		</if> 
+ 		       LIKE '%' || #{keyword} || '%'
+ 	</select>
+ 	
+ 	<select id="selectSearchList" parameterType="hashmap"
+ 	        resultType="com.kh.spring.board.model.dto.BoardDTO">
+ 		<include refid="boardColumn" />
+ 		  FROM
+ 		       TB_SPRING_BOARD
+ 		 WHERE
+ 		       STATUS = 'Y'
+ 		<choose>
+ 			<when test="condition == 'writer'">
+ 				AND BOARD_WRITER
+ 			</when>
+ 			<when test="condition == 'content'">
+ 				AND BOARD_CONTENT
+ 			</when>
+ 			<otherwise>
+ 				AND BOARD_TITLE
+ 			</otherwise>
+ 		</choose>       
+ 				LIKE '%' || #{keyword} || '%'
+ 	     ORDER
+ 	        BY 
+ 				BOARD_NO DESC	        
+ 	</select>
+	
+	
 </mapper>

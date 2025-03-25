@@ -1,6 +1,5 @@
 package com.kh.spring.board.model.service;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -10,42 +9,54 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.spring.board.model.dto.BoardDTO;
 
 public interface BoardService {
-
-	// 게시글 작성(파일 첨부)
-	void insertBoard(BoardDTO board, MultipartFile file, HttpSession session);
+	
+	// 게시글 작성(파일첨부)
+	void insertBoard(BoardDTO board, MultipartFile file, HttpSession session); 
 	/*
 	 * insertBoard();
-	 * 하는 것 + 대상
 	 * save();
 	 */
 	
-	// 게시글 목록 조회
-	Map<String, Object> selectBoardList(int currentPage);
+	// 게시글 목록조회
+	Map<String, Object> selectBoardList(int currentPage); 
 	/*
 	 * selectBoardList();
 	 * selectAll();
 	 * findAll();
 	 */
 	
-	// 게시글 상세보기(댓글도 같이 조회) --> 엄청난 신기술 임박!
-	BoardDTO selectBoard(int boardNo); // 요즘엔 Long 씀 
+	// 게시글 상세보기(댓글도 같이 조회) --> 새로운 멋진 기술써야지 흐흐
+	BoardDTO selectBoard(int boardNo);
 	/*
 	 * selectBoard();
 	 * findByXXXX();
 	 */
 	
 	// 게시글 수정
-	BoardDTO updateBoard(BoardDTO board, MultipartFile file);
+	BoardDTO updateBoard(BoardDTO board, MultipartFile file); 
+	/*
+	 * updateBoard();
+	 * updateByXXX();
+	 */
 	
+	// 게시글 삭제(딜리트인척하고 업데이트 할것 STATUS컬럼값 N으로 바꿀것)
+	void deleteBoard(int boardNo);
 	
-	// 게시글 삭제(딜리트가 아닌 업데이트 STATUS컬럼값 N으로 바꿀 것)
-	void deleteBoard(int boardNNo);
-	
-	
-	// -------------
-	
+	// -------- 1절
 	// 게시글 검색 기능
+	Map<String, Object> doSearch(Map<String, String> map);
 	
-	// 댓글 작성
+	// 댓글작성
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 }
